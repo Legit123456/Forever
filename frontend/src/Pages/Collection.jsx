@@ -6,7 +6,7 @@ import ProductItem from '../Components/ProductItem';
 
 const Collection = () => {
 
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch, loadingProducts } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category,setCategory] = useState([]);
@@ -75,7 +75,7 @@ const Collection = () => {
 
   useEffect(()=>{
     applyFilter();
-  },[category, subCategory, search, showSearch])
+  },[category, subCategory, search, showSearch, products])
 
   useEffect(()=>{
     sortProducts();
@@ -145,11 +145,33 @@ const Collection = () => {
 
         {/* Map Products */}
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6'>
-          {
-            filterProducts.map((item,index)=>(
-              <ProductItem key={index} name={item.name} id={item._id} price={item.price} image={item.image}  />
+
+          {loadingProducts ? (
+            // 🔒 Loading State
+            <div className="col-span-full flex justify-center items-center py-20">
+              <div className="flex flex-col items-center gap-3">
+                <div className="h-10 w-10 border-4 border-t-black border-r-pink-600 border-b-blue-700 border-l-green-500  rounded-full animate-spin"></div>
+                <p className="text-sm text-gray-600">Loading products…</p>
+              </div>
+            </div>
+          ) : filterProducts.length > 0 ? (
+            // ✅ Products Loaded
+            filterProducts.map((item) => (
+              <ProductItem
+                key={item._id}
+                id={item._id}
+                name={item.name}
+                price={item.price}
+                image={item.image}
+              />
             ))
-          }
+          ) : (
+            // 🚫 No Products
+            <p className="col-span-full text-center text-gray-500 py-20">
+              No products found.
+            </p>
+          )}
+
         </div>
 
       </div>

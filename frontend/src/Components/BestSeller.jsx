@@ -12,7 +12,7 @@ const BestSeller = () => {
     const bestProduct = products.filter((item) => item.bestseller);
     setBestSeller(bestProduct.slice(0, 5));
     console.log("best products found:", bestProduct.length, bestProduct);
-  }, []);
+  }, [products]);
 
   return (
     <div className="my-10">

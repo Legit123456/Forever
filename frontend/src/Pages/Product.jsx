@@ -25,8 +25,17 @@ const Product = () => {
   }
 
   useEffect(() => {
-    fetchProductData();
-  },[productId, products])
+    if (!products.length) return
+
+    const product = products.find(p => p._id === productId)
+
+    if (product) {
+      setProductData(product)
+      setImage(product.image[0])
+    } else {
+      setProductData(null)
+    }
+  }, [products, productId])
 
   return productData ? (
     <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'> 
