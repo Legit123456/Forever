@@ -1,25 +1,23 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 const authUser = async (req, res, next) => {
-  const token = req.headers.token;
+    const { token } = req.headers;
 
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "Not Authorized. Login Again",
-    });
-  }
+    if (!token) {
+        return res.json({ success: false, message: 'Not Authorized Login Again' });
+    }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.body.userId = decoded.id;
-    next();
-  } catch (error) {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid or expired token",
-    });
-  }
-};
+    try {
+        // Decodes the token. Make sure your JWT_SECRET matches what you used to sign the token
+        const token_decode = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // CRITICAL: This passes the ID to the controller
+        req.body.userId = token_decode.id; 
+        next();
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
 
 export default authUser;
