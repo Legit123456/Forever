@@ -52,7 +52,7 @@ const Verify = () => {
   return (
     <div>
       <div className='min-h-[60vh] flex items-center justify-center'>
-            <div className='w-20 h-20 border-4 border-gray-300 border-t-4 border-t-primary rounded-full animate-spin'></div>
+            <div className='w-20 h-20 border-4 border-t-black border-r-pink-600 border-b-blue-700 border-l-green-500 rounded-full animate-spin'></div>
        </div>
     </div>
   )
