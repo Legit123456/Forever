@@ -1,6 +1,7 @@
 import React from 'react'
 import {Routes, Route} from 'react-router-dom'
 import Home from './Pages/Home'
+import Profile from './Pages/Profile'
 import Collection from './Pages/Collection'
 import About from './Pages/About'
 import Contact from './Pages/Contact'
@@ -32,6 +33,7 @@ const App = () => {
         <Route path='/place-order' element={<PlaceOrder />} />
         <Route path='/orders' element={<Orders />} />
         <Route path='/verify' element={<Verify />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
       <Footer />
     </div>
