@@ -37,11 +37,12 @@ const Orders = ({ token }) => {
       const response = await axios.post(backendUrl + '/api/order/status', {orderId, status:event.target.value}, { headers: {token}} )
       if (response.data.success) {
         await fetchAllOrders()
+        toast.success(response.data.message)
       }
       
     } catch (error) {
       console.log(error)
-      toast.error(error.message)
+      toast.error(response.data.message)
     }
 
   }
@@ -100,7 +101,7 @@ const Orders = ({ token }) => {
               <p>Date : { new Date(order.date).toLocaleDateString() }  </p>
             </div>
             <p className="text-sm sm:text-[15px]"> {currency} {order.amount} </p>
-            <select onChange={(event)=> statusHandler(event, order._id)} value={order.status} className="p-2 font-semibold" name="status">
+            <select onChange={(event)=> statusHandler(event, order._id)} value={order.status} className="p-2 font-semibold">
               <option value="Order Placed">Order Placed</option>
               <option value="Packing">Packing</option>
               <option value="Shipped">Shipped</option>

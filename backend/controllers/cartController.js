@@ -1,4 +1,4 @@
-import userModel from "../models/userModel.js"
+import userModel from "../models/userModel.js";
 
 // Add products to user cart 
 const addToCart = async (req, res) => {
@@ -22,7 +22,7 @@ const addToCart = async (req, res) => {
 
         // Use findByIdAndUpdate with { new: true } usually, but strict update here is fine
         await userModel.findByIdAndUpdate(userId, { cartData });
-        res.json({ success: true, message: "Added To Cart" });
+        res.json({ success: true, message: "Product added to cart successfully" });
 
     } catch (error) {
         console.log(error);
@@ -44,7 +44,7 @@ const updateCart = async (req, res) => {
         cartData[itemId][size] = quantity;
 
         await userModel.findByIdAndUpdate(userId, { cartData });
-        res.json({ success: true, message: "Cart Updated" });
+        res.json({ success: true, message: "Cart Updated successfully" });
 
     } catch (error) {
         console.log(error);
@@ -54,18 +54,18 @@ const updateCart = async (req, res) => {
 
 // Get user cart data
 const getUserCart = async (req, res) => {
-    try {
-        const { userId } = req.body;
+  try {
+    const { userId } = req.body;
 
-        const userData = await userModel.findById(userId);
-        let cartData = userData.cartData || {}; // FIX: Handle null/undefined
+    const userData = await userModel.findById(userId);
+    let cartData = await userData.cartData;
+    // let cartData = userData.cartData || {}; // FIX: Handle null/undefined
 
-        res.json({ success: true, cartData });
+    res.json({ success: true, cartData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message });
-    }
-}
-
-export { addToCart, updateCart, getUserCart }
+export { addToCart, updateCart, getUserCart };

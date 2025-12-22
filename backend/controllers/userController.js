@@ -4,8 +4,12 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
-};
+    return jwt.sign(
+        {id},
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' } // Token expires in 7 days
+    )
+}
 
 // Route for user login
 const loginUser = async (req, res) => {
@@ -44,6 +48,11 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.json({success:false, message: "All fields are required"})
+    }
+
     // checking user already exists or not
     const exists = await userModel.findOne({ email });
     if (exists) {
@@ -58,7 +67,7 @@ const registerUser = async (req, res) => {
       });
     }
 
-    if (password.length < 8) {
+    if (password.length <= 8) {
       return res.json({
         success: false,
         message: "Please enter a strong password",
